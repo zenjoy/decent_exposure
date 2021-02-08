@@ -26,7 +26,9 @@ RSpec.describe DecentExposure::Expose do
     end
 
     it 'blacklists the @_resources instance variable' do
-      if Rails::VERSION::MAJOR > 4
+      if Rails::VERSION::MAJOR >= 6
+        expect(controller.send(:_protected_ivars)).to include(:'@_resources')
+      elsif Rails::VERSION::MAJOR >= 5
         expect(controller._protected_ivars).to include(:'@_resources')
       else
         expect(controller.class.protected_instance_variables).to include(:'@_resources')
