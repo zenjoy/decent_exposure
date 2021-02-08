@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         ruby: ['2.5', '2.6', '2.7']
-        rails-version: [4.2.x, 5.0.x, 5.x]
+        rails-version: ['5.0.x', '5.x']
 
     runs-on: ubuntu-latest
     steps:
