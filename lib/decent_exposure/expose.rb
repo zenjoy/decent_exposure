@@ -16,7 +16,9 @@ module DecentExposure
         # backwards compatibility for rails 4.0.x
         if const_defined? 'PROTECTED_IVARS'
           self::PROTECTED_IVARS << :@_resources
-        else
+        elsif respond_to?(:_protected_ivars)
+          _protected_ivars << :@_resources
+        elsif respond_to?(:protected_instance_variables)
           protected_instance_variables << '@_resources'
         end
       end
