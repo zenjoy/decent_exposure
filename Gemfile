@@ -21,7 +21,7 @@ end
 
 gem 'pry'
 gem 'rails', rails_version
-gem 'sqlite3', '~> 1.3.6'
+gem 'sqlite3', sqlite_version
 
 platforms :rbx do
   gem 'racc'
