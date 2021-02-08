@@ -12,7 +12,13 @@ module DecentExposure
           @_resources ||= {}
         end
 
-        protected_instance_variables << "@_resources"
+        # protected_instance_variables << "@_resources"
+        # backwards compatibility for rails 4.0.x
+        if const_defined? 'PROTECTED_IVARS'
+          self::PROTECTED_IVARS << :@_resources
+        else
+          protected_instance_variables << '@_resources'
+        end
       end
     end
 
@@ -20,7 +26,7 @@ module DecentExposure
       @_exposures ||= {}
     end
 
-    def decent_configuration(name=:default,&block)
+    def decent_configuration(name = :default, &block)
       self._decent_configurations = _decent_configurations.merge(name => Configuration.new(&block))
     end
 
@@ -29,10 +35,10 @@ module DecentExposure
       expose(*args, &block)
     end
 
-    def expose(name, options={}, &block)
+    def expose(name, options = {}, &block)
       if ActionController::Base.instance_methods.include?(name.to_sym)
         Kernel.warn "[WARNING] You are exposing the `#{name}` method, " \
-          "which overrides an existing ActionController method of the same name. " \
+          'which overrides an existing ActionController method of the same name. ' \
           "Consider a different exposure name\n" \
           "#{caller.first}"
       end
@@ -50,6 +56,7 @@ module DecentExposure
     def define_exposure_methods(name, exposure)
       define_method(name) do
         return _resources[name] if _resources.has_key?(name)
+
         _resources[name] = exposure.call(self)
       end
       helper_method name
