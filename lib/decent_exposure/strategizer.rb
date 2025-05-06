@@ -6,11 +6,11 @@ module DecentExposure
   class Strategizer
     attr_accessor :name, :block, :options, :custom_strategy_class
 
-    def initialize(name, options={})
+    def initialize(name, options={}, &block)
       self.name = name
       self.custom_strategy_class = options.delete(:strategy)
       self.options = options.merge(:name => name)
-      self.block = Proc.new if block_given?
+      self.block = Proc.new(&block) if block_given?
     end
 
     def strategy
